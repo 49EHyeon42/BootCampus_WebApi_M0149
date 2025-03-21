@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Dac.Daos
 {
-    public class EmpolyeeDao
+    public class EmployeeDao
     {
         public int InsertEmployee(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
             string name, int age, string address, string phoneNumber)
