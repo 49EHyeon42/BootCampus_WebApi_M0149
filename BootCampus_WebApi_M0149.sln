@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Contract", "01. Contract", "{6F50CF2E-EA73-4E9D-BCDA-B20B60B90265}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Common", "02. Common", "{5F97F47F-7AA8-4560-B0C6-7B1A3CC004EA}"
+	ProjectSection(SolutionItems) = preProject
+		UserInfo.cs = UserInfo.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Dac", "03. Dac", "{136C71C7-2BAC-420F-8448-FA43A331C230}"
 EndProject
