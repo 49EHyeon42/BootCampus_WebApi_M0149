@@ -2,9 +2,9 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace Dac
+namespace Dac.Daos
 {
-    public class EmpolyeeDac
+    public class EmpolyeeDao
     {
         public int InsertEmployee(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
             string name, int age, string address, string phoneNumber)

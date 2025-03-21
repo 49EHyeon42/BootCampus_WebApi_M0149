@@ -2,9 +2,9 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace Dac
+namespace Dac.Daos
 {
-    public class WorkExperienceDac
+    public class WorkExperienceDao
     {
         public int InsertWorkExperience(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
             int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
