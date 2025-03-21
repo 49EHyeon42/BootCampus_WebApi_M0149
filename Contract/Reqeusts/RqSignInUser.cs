@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Contract.Reqeust
+namespace Contract.Reqeusts
 {
     public class RqSignInUser
     {
