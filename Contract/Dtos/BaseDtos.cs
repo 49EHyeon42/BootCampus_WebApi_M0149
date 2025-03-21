@@ -1,6 +1,6 @@
-﻿namespace Contract.Entity
+﻿namespace Contract.Dtos
 {
-    public class BaseEntity
+    public class BaseDtos
     {
         /// <summary>
         /// 생성일시

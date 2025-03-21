@@ -1,4 +1,4 @@
-﻿using Contract.Entity;
+﻿using Contract.Dtos;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -26,7 +26,7 @@ namespace Dac
             return id;
         }
 
-        public IEnumerable<WorkExperienceEntity> SelectWorkExperienceByEmployeeId(SqlConnection sqlConnection,
+        public IEnumerable<WorkExperienceDto> SelectWorkExperienceByEmployeeId(SqlConnection sqlConnection,
             int employeeId)
         {
             string query = @"
@@ -35,7 +35,7 @@ namespace Dac
                 WHERE EmployeeId = @EmployeeId;
             ";
 
-            return sqlConnection.Query<WorkExperienceEntity>(query, new
+            return sqlConnection.Query<WorkExperienceDto>(query, new
             {
                 EmployeeId = employeeId
             }).AsList();

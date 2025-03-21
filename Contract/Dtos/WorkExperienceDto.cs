@@ -1,6 +1,6 @@
-﻿namespace Contract.Entity
+﻿namespace Contract.Dtos
 {
-    public class WorkExperienceEntity : BaseEntity
+    public class WorkExperienceDto : BaseDtos
     {
         public required int Id { get; init; }
         public required int EmployeeId { get; init; }

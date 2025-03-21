@@ -1,6 +1,6 @@
-﻿namespace Contract.Entity
+﻿namespace Contract.Dtos
 {
-    public class EmployeeEntity : BaseEntity
+    public class EmployeeDto : BaseDtos
     {
         /// <summary>
         /// 직원 식별자

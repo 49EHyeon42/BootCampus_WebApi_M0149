@@ -1,4 +1,4 @@
-﻿using Contract.Entity;
+﻿using Contract.Dtos;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -26,7 +26,7 @@ namespace Dac
             return id;
         }
 
-        public EmployeeEntity? SelectEmployeeById(SqlConnection sqlConnection,
+        public EmployeeDto? SelectEmployeeById(SqlConnection sqlConnection,
             int id)
         {
             string query = @"
@@ -35,20 +35,20 @@ namespace Dac
                 WHERE Id = @Id;
             ";
 
-            return sqlConnection.QueryFirstOrDefault<EmployeeEntity>(query, new
+            return sqlConnection.QueryFirstOrDefault<EmployeeDto>(query, new
             {
                 Id = id
             });
         }
 
-        public IEnumerable<EmployeeEntity> SelectAllEmployee(SqlConnection sqlConnection)
+        public IEnumerable<EmployeeDto> SelectAllEmployee(SqlConnection sqlConnection)
         {
             string query = @"
                 SELECT *
                 FROM Employee;
             ";
 
-            return sqlConnection.Query<EmployeeEntity>(query).AsList();
+            return sqlConnection.Query<EmployeeDto>(query).AsList();
         }
 
         public void UpdateEmployeeById(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
