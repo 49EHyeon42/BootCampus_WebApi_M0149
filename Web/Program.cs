@@ -1,4 +1,8 @@
+using Web;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<CurrentUserStorage>();
 
 builder.Services.AddControllers();
 
