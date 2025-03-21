@@ -1,11 +1,13 @@
 ﻿using Common;
 using Contract.Reqeust;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes.ExceptionFilters.Controllers;
 
 namespace Web.Controllers
 {
     [Route("api/sign")]
     [ApiController]
+    [SignControllerExceptionFilter]
     public class SignController(CurrentUserStorage currentUserStorage) : ControllerBase
     {
         private readonly CurrentUserStorage _currentUserStorage = currentUserStorage;
