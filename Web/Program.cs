@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<UserStorage>();
 
-builder.Services.AddSingleton(builder.Configuration.GetSection("ConnectionStrings").Get<DatabaseConfig>()!);
+builder.Services.AddSingleton(new DatabaseConfig(builder.Configuration.GetConnectionString("Default")!));
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IWorkExperienceService, WorkExperienceService>();

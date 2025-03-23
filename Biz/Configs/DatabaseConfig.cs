@@ -5,11 +5,16 @@ namespace Biz.Configs
 {
     public class DatabaseConfig
     {
-        public required string DefaultConnectionString { private get; init; }
+        private readonly string _connectionString;
+
+        public DatabaseConfig(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
         public IDbConnection GetConnection()
         {
-            return new SqlConnection(DefaultConnectionString);
+            return new SqlConnection(_connectionString);
         }
     }
 }
