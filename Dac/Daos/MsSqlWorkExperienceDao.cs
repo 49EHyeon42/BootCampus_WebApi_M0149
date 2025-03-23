@@ -23,7 +23,7 @@ namespace Dac.Daos
             }, transaction);
         }
 
-        public List<WorkExperienceDto> SelectWorkExperienceByEmployeeId(IDbConnection connection, int employeeId)
+        public List<WorkExperienceDto> SelectAllWorkExperienceByEmployeeId(IDbConnection connection, int employeeId)
         {
             string query = @"
                 SELECT *

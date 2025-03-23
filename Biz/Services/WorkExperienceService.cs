@@ -45,8 +45,7 @@ namespace Biz.Services
             var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
                 ?? throw new EmployeeNotFoundException();
 
-            // TODO: 메서드 복수형으로 변경 필요
-            return _workExperienceDao.SelectWorkExperienceByEmployeeId(connection, employeeId).Select(dto => new RsFindWorkExperience
+            return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId).Select(dto => new RsFindWorkExperience
             {
                 Id = dto.Id,
                 EmployeeId = employeeId,

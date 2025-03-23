@@ -7,7 +7,7 @@ namespace Contract.Dac
     {
         public void InsertWorkExperience(IDbConnection connection, IDbTransaction transaction, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
 
-        public List<WorkExperienceDto> SelectWorkExperienceByEmployeeId(IDbConnection connection, int employeeId);
+        public List<WorkExperienceDto> SelectAllWorkExperienceByEmployeeId(IDbConnection connection, int employeeId);
 
         public void UpdateWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description);
 
