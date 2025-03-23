@@ -1,22 +1,19 @@
-﻿using System.Diagnostics;
-using Dac.Daos;
-using Microsoft.Data.SqlClient;
-using Biz.Configs;
-using Contract.Reqeusts;
+﻿using Biz.Configs;
 using Contract.Responses;
 using Common.Exceptions;
-
-// TODO: sqlConnection -> connection, sqlTransaction -> transaction
+using Contract.Dac;
+using System.Diagnostics;
 
 namespace Biz.Services
 {
-    public class EmployeeService(DatabaseConfig databaseConfig, EmployeeDao employeeDao, WorkExperienceDao workExperienceDao)
+    // TODO: Response 걷어내기
+
+    public class EmployeeService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao)
     {
         private readonly DatabaseConfig _databaseConfig = databaseConfig;
-        private readonly EmployeeDao _employeeDao = employeeDao;
-        private readonly WorkExperienceDao _workExperienceDao = workExperienceDao;
+        private readonly IEmployeeDao _employeeDao = employeeDao;
+        private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
-        // TODO: 여기 수정
         public void SaveEmployee(string name, int age, string address, string phoneNumber)
         {
             using var connection = _databaseConfig.GetConnection();
@@ -34,19 +31,17 @@ namespace Biz.Services
             {
                 Debug.WriteLine($"EmployeeService:SaveEmployee: {exception.Message}");
 
-                sqlTransaction.Rollback();
+                transaction.Rollback();
 
                 throw;
             }
         }
 
-        public IEnumerable<RsFindEmployee> FindAllEmployees()
+        public List<RsFindEmployee> FindAllEmployees()
         {
-            using var sqlConnection = new SqlConnection(_dbConnectionString);
+            using var connection = _databaseConfig.GetConnection();
 
-            var employeeDtos = _employeeDao.SelectAllEmployee(sqlConnection);
-
-            return employeeDtos.Select(dto => new RsFindEmployee
+            return _employeeDao.SelectAllEmployee(connection).Select(dto => new RsFindEmployee
             {
                 Id = dto.Id,
                 Name = dto.Name,
@@ -55,14 +50,14 @@ namespace Biz.Services
                 PhoneNumber = dto.PhoneNumber,
                 CreatedDate = dto.CreatedDate,
                 LastModifiedDate = dto.LastModifiedDate
-            });
+            }).ToList();
         }
 
         public RsFindEmployee FindEmployeeById(int id)
         {
-            using var sqlConnection = new SqlConnection(_dbConnectionString);
+            using var connection = _databaseConfig.GetConnection();
 
-            var employeeDto = _employeeDao.SelectEmployeeById(sqlConnection, id)
+            var employeeDto = _employeeDao.SelectEmployeeById(connection, id)
                 ?? throw new EmployeeNotFoundException();
 
             return new RsFindEmployee
@@ -79,22 +74,22 @@ namespace Biz.Services
 
         public void UpdateEmployeeById(int id, string name, int age, string address, string phoneNumber)
         {
-            using var sqlConnection = new SqlConnection(_dbConnectionString);
-            sqlConnection.Open();
+            using var connection = _databaseConfig.GetConnection();
+            connection.Open();
 
-            using var sqlTransaction = sqlConnection.BeginTransaction();
+            using var transaction = connection.BeginTransaction();
 
             try
             {
-                _employeeDao.UpdateEmployeeById(sqlConnection, sqlTransaction, id, name, age, address, phoneNumber);
+                _employeeDao.UpdateEmployeeById(connection, transaction, id, name, age, address, phoneNumber);
 
-                sqlTransaction.Commit();
+                transaction.Commit();
             }
             catch (Exception exception)
             {
                 Debug.WriteLine($"EmployeeService:UpdateEmployeeById: {exception.Message}");
 
-                sqlTransaction.Rollback();
+                transaction.Rollback();
 
                 throw;
             }
@@ -102,23 +97,23 @@ namespace Biz.Services
 
         public void DeleteEmployeeById(int id)
         {
-            using var sqlConnection = new SqlConnection(_dbConnectionString);
-            sqlConnection.Open();
+            using var connection = _databaseConfig.GetConnection();
+            connection.Open();
 
-            using var sqlTransaction = sqlConnection.BeginTransaction();
+            using var transaction = connection.BeginTransaction();
 
             try
             {
-                _workExperienceDao.DeleteWorkExperienceByEmployeeId(sqlConnection, sqlTransaction, id);
-                _employeeDao.DeleteEmployeeById(sqlConnection, sqlTransaction, id);
+                _workExperienceDao.DeleteWorkExperienceById(connection, transaction, id);
+                _employeeDao.DeleteEmployeeById(connection, transaction, id);
 
-                sqlTransaction.Commit();
+                transaction.Commit();
             }
             catch (Exception exception)
             {
                 Debug.WriteLine($"EmployeeService:DeleteEmployeeById: {exception.Message}");
 
-                sqlTransaction.Rollback();
+                transaction.Rollback();
 
                 throw;
             }
