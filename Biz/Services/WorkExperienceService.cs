@@ -18,12 +18,12 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
-            using var transaction = connection.BeginTransaction();
-
             if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
             {
                 throw new EmployeeNotFoundException();
             }
+
+            using var transaction = connection.BeginTransaction();
 
             try
             {
