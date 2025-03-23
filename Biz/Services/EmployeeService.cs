@@ -17,7 +17,8 @@ namespace Biz.Services
         private readonly EmployeeDao _employeeDao = employeeDao;
         private readonly WorkExperienceDao _workExperienceDao = workExperienceDao;
 
-        public void SaveEmployee(RqSaveEmployee request)
+        // TODO: 여기 수정
+        public void SaveEmployee(string name, int age, string address, string phoneNumber)
         {
             using var sqlConnection = new SqlConnection(_dbConnectionString);
             sqlConnection.Open();
@@ -27,16 +28,7 @@ namespace Biz.Services
             try
             {
                 int employeeId = _employeeDao.InsertEmployee(sqlConnection, sqlTransaction,
-                    request.Name, request.Age, request.Address, request.PhoneNumber);
-
-                if (request.SaveWorkExperiences is not null)
-                {
-                    foreach (RqSaveWorkExperience rqSaveWorkExperience in request.SaveWorkExperiences)
-                    {
-                        _workExperienceDao.InsertWorkExperience(sqlConnection, sqlTransaction,
-                            employeeId, rqSaveWorkExperience.HireDate, rqSaveWorkExperience.LeaveDate, rqSaveWorkExperience.Description);
-                    }
-                }
+                    name, age, address, phoneNumber);
 
                 sqlTransaction.Commit();
             }
