@@ -1,33 +1,28 @@
-﻿using Contract.Dtos;
+﻿using System.Data;
+using Contract.Dtos;
 using Dapper;
-using Microsoft.Data.SqlClient;
 
 namespace Dac.Daos
 {
     public class EmployeeDao
     {
-        public int InsertEmployee(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            string name, int age, string address, string phoneNumber)
+        public void InsertEmployee(IDbConnection connection, IDbTransaction transaction, string name, int age, string address, string phoneNumber)
         {
             string query = @"
                 INSERT INTO Employee (Name, Age, Address, PhoneNumber)
-                OUTPUT INSERTED.Id
                 VALUES (@Name, @Age, @Address, @PhoneNumber);
             ";
 
-            int id = sqlConnection.QuerySingle<int>(query, new
+            connection.Execute(query, new
             {
                 Name = name,
                 Age = age,
                 Address = address,
                 PhoneNumber = phoneNumber
-            }, sqlTransaction);
-
-            return id;
+            }, transaction);
         }
 
-        public EmployeeDto? SelectEmployeeById(SqlConnection sqlConnection,
-            int id)
+        public EmployeeDto? SelectEmployeeById(IDbConnection connection, int id)
         {
             string query = @"
                 SELECT *
@@ -35,24 +30,23 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            return sqlConnection.QueryFirstOrDefault<EmployeeDto>(query, new
+            return connection.QueryFirstOrDefault<EmployeeDto>(query, new
             {
                 Id = id
             });
         }
 
-        public IEnumerable<EmployeeDto> SelectAllEmployee(SqlConnection sqlConnection)
+        public List<EmployeeDto> SelectAllEmployee(IDbConnection connection)
         {
             string query = @"
                 SELECT *
                 FROM Employee;
             ";
 
-            return sqlConnection.Query<EmployeeDto>(query).AsList();
+            return connection.Query<EmployeeDto>(query).AsList();
         }
 
-        public void UpdateEmployeeById(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            int id, string name, int age, string address, string phoneNumber)
+        public void UpdateEmployeeById(IDbConnection connection, IDbTransaction transaction, int id, string name, int age, string address, string phoneNumber)
         {
             string query = @"
                 UPDATE Employee
@@ -61,7 +55,7 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            sqlConnection.Execute(query, new
+            connection.Execute(query, new
             {
                 Id = id,
                 Name = name,
@@ -69,21 +63,20 @@ namespace Dac.Daos
                 Address = address,
                 PhoneNumber = phoneNumber,
                 LastModifiedDate = DateTime.Now
-            }, sqlTransaction);
+            }, transaction);
         }
 
-        public void DeleteEmployeeById(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            int id)
+        public void DeleteEmployeeById(IDbConnection connection, IDbTransaction transaction, int id)
         {
             string query = @"
                 DELETE FROM Employee
                 WHERE Id = @Id;
             ";
 
-            sqlConnection.Execute(query, new
+            connection.Execute(query, new
             {
                 Id = id
-            }, sqlTransaction);
+            }, transaction);
         }
     }
 }
