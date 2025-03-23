@@ -1,13 +1,11 @@
 ﻿using Biz.Configs;
-using Contract.Responses;
 using Common.Exceptions;
 using Contract.Dac;
 using System.Diagnostics;
+using Contract.Dtos;
 
 namespace Biz.Services
 {
-    // TODO: Response 걷어내기
-
     public class EmployeeService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao)
     {
         private readonly DatabaseConfig _databaseConfig = databaseConfig;
@@ -37,39 +35,19 @@ namespace Biz.Services
             }
         }
 
-        public List<RsFindEmployee> FindAllEmployees()
+        public List<EmployeeDto> FindAllEmployees()
         {
             using var connection = _databaseConfig.GetConnection();
 
-            return _employeeDao.SelectAllEmployee(connection).Select(dto => new RsFindEmployee
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Age = dto.Age,
-                Address = dto.Address,
-                PhoneNumber = dto.PhoneNumber,
-                CreatedDate = dto.CreatedDate,
-                LastModifiedDate = dto.LastModifiedDate
-            }).ToList();
+            return _employeeDao.SelectAllEmployee(connection);
         }
 
-        public RsFindEmployee FindEmployeeById(int id)
+        public EmployeeDto FindEmployeeById(int id)
         {
             using var connection = _databaseConfig.GetConnection();
 
-            var employeeDto = _employeeDao.SelectEmployeeById(connection, id)
+            return _employeeDao.SelectEmployeeById(connection, id)
                 ?? throw new EmployeeNotFoundException();
-
-            return new RsFindEmployee
-            {
-                Id = employeeDto.Id,
-                Name = employeeDto.Name,
-                Age = employeeDto.Age,
-                Address = employeeDto.Address,
-                PhoneNumber = employeeDto.PhoneNumber,
-                CreatedDate = employeeDto.CreatedDate,
-                LastModifiedDate = employeeDto.LastModifiedDate
-            };
         }
 
         public void UpdateEmployeeById(int id, string name, int age, string address, string phoneNumber)

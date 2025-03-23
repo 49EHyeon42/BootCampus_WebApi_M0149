@@ -2,7 +2,7 @@
 using Biz.Configs;
 using Common.Exceptions;
 using Contract.Dac;
-using Contract.Responses;
+using Contract.Dtos;
 
 namespace Biz.Services
 {
@@ -38,21 +38,14 @@ namespace Biz.Services
             }
         }
 
-        public IEnumerable<RsFindWorkExperience> FindAllWorkExperienceByEmployeeId(int employeeId)
+        public List<WorkExperienceDto> FindAllWorkExperienceByEmployeeId(int employeeId)
         {
             using var connection = _databaseConfig.GetConnection();
 
             var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
                 ?? throw new EmployeeNotFoundException();
 
-            return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId).Select(dto => new RsFindWorkExperience
-            {
-                Id = dto.Id,
-                EmployeeId = employeeId,
-                HireDate = dto.HireDate,
-                LeaveDate = dto.LeaveDate,
-                Description = dto.Description
-            });
+            return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId);
         }
 
         public void UpdateWorkExperienceById(int id, DateTime hireDate, DateTime? leaveDate, string? description)
