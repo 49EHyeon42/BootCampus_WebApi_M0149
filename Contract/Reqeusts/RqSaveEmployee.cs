@@ -18,9 +18,5 @@
         /// 직원 전화번호
         /// </summary>
         public required string PhoneNumber { get; init; }
-        /// <summary>
-        /// 직원 경력사항들
-        /// </summary>
-        public IEnumerable<RqSaveWorkExperience>? SaveWorkExperiences { get; init; }
     }
 }
