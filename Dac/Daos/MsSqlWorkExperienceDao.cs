@@ -1,33 +1,29 @@
-﻿using Contract.Dtos;
+﻿using System.Data;
+using Contract.Dac;
+using Contract.Dtos;
 using Dapper;
-using Microsoft.Data.SqlClient;
 
 namespace Dac.Daos
 {
-    public class WorkExperienceDao
+    public class MsSqlWorkExperienceDao : IWorkExperienceDao
     {
-        public int InsertWorkExperience(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
+        public void InsertWorkExperience(IDbConnection connection, IDbTransaction transaction, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             string query = @"
                 INSERT INTO WorkExperience (EmployeeId, HireDate, LeaveDate, Description)
-                OUTPUT INSERTED.Id
                 VALUES (@EmployeeId, @HireDate, @LeaveDate, @Description);
             ";
 
-            int id = sqlConnection.QuerySingle<int>(query, new
+            connection.Execute(query, new
             {
                 EmployeeId = employeeId,
                 HireDate = hireDate,
                 LeaveDate = leaveDate,
                 Description = description
-            }, sqlTransaction);
-
-            return id;
+            }, transaction);
         }
 
-        public IEnumerable<WorkExperienceDto> SelectWorkExperienceByEmployeeId(SqlConnection sqlConnection,
-            int employeeId)
+        public List<WorkExperienceDto> SelectWorkExperienceByEmployeeId(IDbConnection connection, int employeeId)
         {
             string query = @"
                 SELECT *
@@ -35,14 +31,13 @@ namespace Dac.Daos
                 WHERE EmployeeId = @EmployeeId;
             ";
 
-            return sqlConnection.Query<WorkExperienceDto>(query, new
+            return connection.Query<WorkExperienceDto>(query, new
             {
                 EmployeeId = employeeId
             }).AsList();
         }
 
-        public void UpdateWorkExperienceById(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public void UpdateWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             string query = @"
                 UPDATE WorkExperience
@@ -51,28 +46,27 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            sqlConnection.Execute(query, new
+            connection.Execute(query, new
             {
                 Id = id,
                 HireDate = hireDate,
                 LeaveDate = leaveDate,
                 Description = description,
                 LastModifiedDate = DateTime.Now
-            }, sqlTransaction);
+            }, transaction);
         }
 
-        public void DeleteWorkExperienceByEmployeeId(SqlConnection sqlConnection, SqlTransaction sqlTransaction,
-            int employeeId)
+        public void DeleteWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id)
         {
             string query = @"
                 DELETE FROM WorkExperience
-                WHERE EmployeeId = @EmployeeId;
+                WHERE Id = @Id;
             ";
 
-            sqlConnection.Execute(query, new
+            connection.Execute(query, new
             {
-                EmployeeId = employeeId
-            }, sqlTransaction);
+                Id = id
+            }, transaction);
         }
     }
 }
