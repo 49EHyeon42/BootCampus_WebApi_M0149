@@ -14,5 +14,7 @@ namespace Contract.Dac
         public void UpdateWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description);
 
         public void DeleteWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id);
+
+        public void DeleteWorkExperienceByEmployeeId(IDbConnection connection, IDbTransaction transaction, int employeeId);
     }
 }

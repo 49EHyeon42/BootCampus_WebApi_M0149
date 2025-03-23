@@ -93,7 +93,7 @@ namespace Biz.Services
 
             try
             {
-                _workExperienceDao.DeleteWorkExperienceById(connection, transaction, id);
+                _workExperienceDao.DeleteWorkExperienceByEmployeeId(connection, transaction, id);
                 _employeeDao.DeleteEmployeeById(connection, transaction, id);
 
                 transaction.Commit();

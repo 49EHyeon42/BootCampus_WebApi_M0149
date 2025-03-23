@@ -83,5 +83,18 @@ namespace Dac.Daos
                 Id = id
             }, transaction);
         }
+
+        public void DeleteWorkExperienceByEmployeeId(IDbConnection connection, IDbTransaction transaction, int employeeId)
+        {
+            string query = @"
+                DELETE FROM WorkExperience
+                WHERE EmployeeId = @EmployeeId;
+            ";
+
+            connection.Execute(query, new
+            {
+                EmployeeId = employeeId
+            }, transaction);
+        }
     }
 }
