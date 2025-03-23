@@ -58,16 +58,15 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
-            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)
             {
-                throw new EmployeeNotFoundException();
+                throw new WorkExperienceNotFoundException();
             }
 
             using var transaction = connection.BeginTransaction();
 
             try
             {
-                // TODO: 수정
                 _workExperienceDao.UpdateWorkExperienceById(connection, transaction, id, hireDate, leaveDate, description);
 
                 transaction.Commit();
@@ -87,16 +86,15 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
-            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)
             {
-                throw new EmployeeNotFoundException();
+                throw new WorkExperienceNotFoundException();
             }
 
             using var transaction = connection.BeginTransaction();
 
             try
             {
-                // TODO: 수정
                 _workExperienceDao.DeleteWorkExperienceById(connection, transaction, id);
 
                 transaction.Commit();
