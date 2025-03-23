@@ -49,10 +49,13 @@ namespace Biz.Services
             return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId);
         }
 
-        public void UpdateWorkExperienceById(int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public void UpdateWorkExperienceByEmployeeIdAndId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
+
+            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
+                ?? throw new EmployeeNotFoundException();
 
             using var transaction = connection.BeginTransaction();
 
@@ -72,10 +75,13 @@ namespace Biz.Services
             }
         }
 
-        public void DeleteWorkExperienceById(int id)
+        public void DeleteWorkExperienceByEmployeeIdAndId(int employeeId, int id)
         {
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
+
+            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
+                ?? throw new EmployeeNotFoundException();
 
             using var transaction = connection.BeginTransaction();
 
