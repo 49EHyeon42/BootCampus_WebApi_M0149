@@ -1,5 +1,5 @@
 ﻿using Common;
-using Contract.Reqeust;
+using Contract.Reqeusts;
 using Microsoft.AspNetCore.Mvc;
 using Web.Attributes.ExceptionFilters.Controllers;
 
@@ -8,14 +8,14 @@ namespace Web.Controllers
     [Route("api/sign")]
     [ApiController]
     [SignControllerExceptionFilter]
-    public class SignController(CurrentUserStorage currentUserStorage) : ControllerBase
+    public class SignController(UserStorage userStorage) : ControllerBase
     {
-        private readonly CurrentUserStorage _currentUserStorage = currentUserStorage;
+        private readonly UserStorage _userStorage = userStorage;
 
         [HttpPost]
         public IActionResult SignInUser(RqSignInUser request)
         {
-            _currentUserStorage.SaveUserInfo(new UserInfo
+            _userStorage.SaveUserInfo(new UserInfo
             {
                 Name = request.Name,
                 Sex = request.Sex,
@@ -28,7 +28,7 @@ namespace Web.Controllers
         [HttpDelete]
         public IActionResult SignOutUser()
         {
-            _currentUserStorage.DeleteUserInfo();
+            _userStorage.DeleteUserInfo();
 
             return Ok();
         }

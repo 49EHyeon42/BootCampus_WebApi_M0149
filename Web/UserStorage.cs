@@ -3,7 +3,7 @@ using Common.Exceptions;
 
 namespace Web
 {
-    public class CurrentUserStorage
+    public class UserStorage
     {
         private UserInfo? _userInfo;
 
