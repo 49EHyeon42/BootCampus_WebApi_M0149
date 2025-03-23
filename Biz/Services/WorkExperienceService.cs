@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using Biz.Configs;
 using Common.Exceptions;
+using Contract.Biz;
 using Contract.Dac;
 using Contract.Dtos;
 
 namespace Biz.Services
 {
-    public class WorkExperienceService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao)
+    public class WorkExperienceService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IWorkExperienceService
     {
         private readonly DatabaseConfig _databaseConfig = databaseConfig;
         private readonly IEmployeeDao _employeeDao = employeeDao;
