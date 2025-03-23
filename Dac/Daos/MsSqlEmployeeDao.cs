@@ -1,10 +1,11 @@
 ﻿using System.Data;
+using Contract.Dac;
 using Contract.Dtos;
 using Dapper;
 
 namespace Dac.Daos
 {
-    public class EmployeeDao
+    public class MsSqlEmployeeDao : IEmployeeDao
     {
         public void InsertEmployee(IDbConnection connection, IDbTransaction transaction, string name, int age, string address, string phoneNumber)
         {

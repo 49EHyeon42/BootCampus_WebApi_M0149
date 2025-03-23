@@ -10,27 +10,25 @@ using Common.Exceptions;
 
 namespace Biz.Services
 {
-    public class EmployeeService(DatabaseConfig databaseConfig,
-        EmployeeDao employeeDao, WorkExperienceDao workExperienceDao)
+    public class EmployeeService(DatabaseConfig databaseConfig, EmployeeDao employeeDao, WorkExperienceDao workExperienceDao)
     {
-        private readonly string _dbConnectionString = databaseConfig.ConnectionString;
+        private readonly DatabaseConfig _databaseConfig = databaseConfig;
         private readonly EmployeeDao _employeeDao = employeeDao;
         private readonly WorkExperienceDao _workExperienceDao = workExperienceDao;
 
         // TODO: 여기 수정
         public void SaveEmployee(string name, int age, string address, string phoneNumber)
         {
-            using var sqlConnection = new SqlConnection(_dbConnectionString);
-            sqlConnection.Open();
+            using var connection = _databaseConfig.GetConnection();
+            connection.Open();
 
-            using var sqlTransaction = sqlConnection.BeginTransaction();
+            using var transaction = connection.BeginTransaction();
 
             try
             {
-                int employeeId = _employeeDao.InsertEmployee(sqlConnection, sqlTransaction,
-                    name, age, address, phoneNumber);
+                _employeeDao.InsertEmployee(connection, transaction, name, age, address, phoneNumber);
 
-                sqlTransaction.Commit();
+                transaction.Commit();
             }
             catch (Exception exception)
             {
