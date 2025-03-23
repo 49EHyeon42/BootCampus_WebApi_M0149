@@ -29,9 +29,7 @@ namespace Web.Controllers
                 Name = dto.Name,
                 Age = dto.Age,
                 Address = dto.Address,
-                PhoneNumber = dto.PhoneNumber,
-                CreatedDate = dto.CreatedDate,
-                LastModifiedDate = dto.LastModifiedDate
+                PhoneNumber = dto.PhoneNumber
             }).ToList());
         }
 
@@ -62,9 +60,7 @@ namespace Web.Controllers
                 Name = employeeDto.Name,
                 Address = employeeDto.Address,
                 Age = employeeDto.Age,
-                PhoneNumber = employeeDto.PhoneNumber,
-                CreatedDate = employeeDto.CreatedDate,
-                LastModifiedDate = employeeDto.LastModifiedDate
+                PhoneNumber = employeeDto.PhoneNumber
             });
         }
 

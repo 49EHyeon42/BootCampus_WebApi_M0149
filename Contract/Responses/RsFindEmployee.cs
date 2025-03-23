@@ -22,13 +22,5 @@
         /// 직원 전화번호
         /// </summary>
         public required string PhoneNumber { get; init; }
-        /// <summary>
-        /// 생성일시
-        /// </summary>
-        public required DateTime CreatedDate { get; init; }
-        /// <summary>
-        /// 마지막 수정일시
-        /// </summary>
-        public DateTime? LastModifiedDate { get; init; }
     }
 }
