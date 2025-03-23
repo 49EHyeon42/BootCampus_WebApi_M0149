@@ -1,14 +1,15 @@
-﻿using System.Diagnostics;
-using Biz.Configs;
+﻿using Biz.Configs;
 using Common.Exceptions;
 using Contract.Biz;
 using Contract.Dac;
 using Contract.Dtos;
+using Microsoft.Extensions.Logging;
 
 namespace Biz.Services
 {
-    public class WorkExperienceService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IWorkExperienceService
+    public class WorkExperienceService(ILogger<WorkExperienceService> logger, DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IWorkExperienceService
     {
+        private readonly ILogger<WorkExperienceService> _logger = logger;
         private readonly DatabaseConfig _databaseConfig = databaseConfig;
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
@@ -33,7 +34,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"WorkExperienceService:SaveWorkExperienceByEmployeeId: {exception.Message}");
+                _logger.LogInformation("WorkExperienceService:SaveWorkExperienceByEmployeeId: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 
@@ -73,7 +74,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"WorkExperienceService:UpdateWorkExperienceById: {exception.Message}");
+                _logger.LogInformation("WorkExperienceService:UpdateWorkExperienceByIdAndEmployeeId: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 
@@ -101,7 +102,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"WorkExperienceService:DeleteWorkExperienceById: {exception.Message}");
+                _logger.LogInformation("WorkExperienceService:DeleteWorkExperienceByIdAndEmployeeId: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 

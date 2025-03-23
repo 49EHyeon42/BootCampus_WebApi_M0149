@@ -1,14 +1,15 @@
 ﻿using Biz.Configs;
 using Common.Exceptions;
 using Contract.Dac;
-using System.Diagnostics;
 using Contract.Dtos;
 using Contract.Biz;
+using Microsoft.Extensions.Logging;
 
 namespace Biz.Services
 {
-    public class EmployeeService(DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IEmployeeService
+    public class EmployeeService(ILogger<EmployeeService> logger, DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IEmployeeService
     {
+        private readonly ILogger<EmployeeService> _logger = logger;
         private readonly DatabaseConfig _databaseConfig = databaseConfig;
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
@@ -28,7 +29,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"EmployeeService:SaveEmployee: {exception.Message}");
+                _logger.LogInformation("EmployeeService:SaveEmployee: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 
@@ -71,7 +72,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"EmployeeService:UpdateEmployeeById: {exception.Message}");
+                _logger.LogInformation("EmployeeService:UpdateEmployeeById: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 
@@ -100,7 +101,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                Debug.WriteLine($"EmployeeService:DeleteEmployeeById: {exception.Message}");
+                _logger.LogInformation("EmployeeService:DeleteEmployeeById: {ExceptionMessage}", exception.Message);
 
                 transaction.Rollback();
 
