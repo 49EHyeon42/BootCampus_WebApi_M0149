@@ -53,7 +53,7 @@ namespace Biz.Services
             return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId);
         }
 
-        public void UpdateWorkExperienceByEmployeeIdAndId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public void UpdateWorkExperienceByIdAndEmployeeId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
@@ -81,7 +81,7 @@ namespace Biz.Services
             }
         }
 
-        public void DeleteWorkExperienceByEmployeeIdAndId(int employeeId, int id)
+        public void DeleteWorkExperienceByIdAndEmployeeId(int employeeId, int id)
         {
             using var connection = _databaseConfig.GetConnection();
             connection.Open();

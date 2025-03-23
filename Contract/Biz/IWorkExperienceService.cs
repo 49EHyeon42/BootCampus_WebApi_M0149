@@ -6,7 +6,7 @@ namespace Contract.Biz
     {
         public void SaveWorkExperienceByEmployeeId(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
         public List<WorkExperienceDto> FindAllWorkExperienceByEmployeeId(int employeeId);
-        public void UpdateWorkExperienceByEmployeeIdAndId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description);
-        public void DeleteWorkExperienceByEmployeeIdAndId(int employeeId, int id);
+        public void UpdateWorkExperienceByIdAndEmployeeId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description);
+        public void DeleteWorkExperienceByIdAndEmployeeId(int employeeId, int id);
     }
 }

@@ -49,7 +49,7 @@ namespace Web.Controllers
         {
             var userName = _userStorage.GetName();
 
-            _workExperienceService.UpdateWorkExperienceByEmployeeIdAndId(employeeId, id, body.HireDate, body.LeaveDate, body.Description);
+            _workExperienceService.UpdateWorkExperienceByIdAndEmployeeId(employeeId, id, body.HireDate, body.LeaveDate, body.Description);
 
             // TODO: 로그
 
@@ -61,7 +61,7 @@ namespace Web.Controllers
         {
             var userName = _userStorage.GetName();
 
-            _workExperienceService.DeleteWorkExperienceByEmployeeIdAndId(employeeId, id);
+            _workExperienceService.DeleteWorkExperienceByIdAndEmployeeId(employeeId, id);
 
             // TODO: 로그
 
