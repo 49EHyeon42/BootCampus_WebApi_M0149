@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Biz.Services
 {
-    public class WorkExperienceService(ILogger<WorkExperienceService> logger, DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IWorkExperienceService
+    public class WorkExperienceService(ILogger<WorkExperienceService> logger, IDatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IWorkExperienceService
     {
         private readonly ILogger<WorkExperienceService> _logger = logger;
-        private readonly DatabaseConfig _databaseConfig = databaseConfig;
+        private readonly IDatabaseConfig _databaseConfig = databaseConfig;
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
         public void SaveWorkExperienceByEmployeeId(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
@@ -44,7 +44,7 @@ namespace Biz.Services
 
         public List<WorkExperienceDto> FindAllWorkExperienceByEmployeeId(int employeeId)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
 
             if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
             {
@@ -56,7 +56,7 @@ namespace Biz.Services
 
         public void UpdateWorkExperienceByIdAndEmployeeId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)
@@ -84,7 +84,7 @@ namespace Biz.Services
 
         public void DeleteWorkExperienceByIdAndEmployeeId(int employeeId, int id)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)

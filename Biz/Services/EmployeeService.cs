@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Biz.Services
 {
-    public class EmployeeService(ILogger<EmployeeService> logger, DatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IEmployeeService
+    public class EmployeeService(ILogger<EmployeeService> logger, IDatabaseConfig databaseConfig, IEmployeeDao employeeDao, IWorkExperienceDao workExperienceDao) : IEmployeeService
     {
         private readonly ILogger<EmployeeService> _logger = logger;
-        private readonly DatabaseConfig _databaseConfig = databaseConfig;
+        private readonly IDatabaseConfig _databaseConfig = databaseConfig;
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
         public void SaveEmployee(string name, int age, string address, string phoneNumber)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             using var transaction = connection.BeginTransaction();
@@ -39,14 +39,14 @@ namespace Biz.Services
 
         public List<EmployeeDto> FindAllEmployees()
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
 
             return _employeeDao.SelectAllEmployee(connection);
         }
 
         public EmployeeDto FindEmployeeById(int id)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
 
             return _employeeDao.SelectEmployeeById(connection, id)
                 ?? throw new EmployeeNotFoundException();
@@ -54,7 +54,7 @@ namespace Biz.Services
 
         public void UpdateEmployeeById(int id, string name, int age, string address, string phoneNumber)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             if (_employeeDao.SelectEmployeeById(connection, id) is null)
@@ -82,7 +82,7 @@ namespace Biz.Services
 
         public void DeleteEmployeeById(int id)
         {
-            using var connection = _databaseConfig.GetConnection();
+            using var connection = _databaseConfig.GetDbConnection();
             connection.Open();
 
             if (_employeeDao.SelectEmployeeById(connection, id) is null)
