@@ -1,4 +1,5 @@
 ﻿using Biz.Services;
+using Contract.Biz;
 using Contract.Reqeusts;
 using Contract.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,10 @@ namespace Web.Controllers
     [Route("api/employees/{employeeId}/work_experiences")]
     [ApiController]
     [WorkExperienceControllerExceptionFilter]
-    public class WorkExperienceController(UserStorage userStorage, WorkExperienceService workExperienceService) : ControllerBase
+    public class WorkExperienceController(UserStorage userStorage, IWorkExperienceService workExperienceService) : ControllerBase
     {
         private readonly UserStorage _userStorage = userStorage;
-        private readonly WorkExperienceService _workExperienceService = workExperienceService;
+        private readonly IWorkExperienceService _workExperienceService = workExperienceService;
 
         [HttpGet]
         public ActionResult<List<RsFindWorkExperience>> FindAllWorkExperience(int employeeId)
