@@ -56,6 +56,11 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
+            if (_employeeDao.SelectEmployeeById(connection, id) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
+
             using var transaction = connection.BeginTransaction();
 
             try
@@ -78,6 +83,11 @@ namespace Biz.Services
         {
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
+
+            if (_employeeDao.SelectEmployeeById(connection, id) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
 
             using var transaction = connection.BeginTransaction();
 

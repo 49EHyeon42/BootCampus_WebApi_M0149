@@ -20,8 +20,10 @@ namespace Biz.Services
 
             using var transaction = connection.BeginTransaction();
 
-            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
-                ?? throw new EmployeeNotFoundException();
+            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
 
             try
             {
@@ -43,8 +45,10 @@ namespace Biz.Services
         {
             using var connection = _databaseConfig.GetConnection();
 
-            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
-                ?? throw new EmployeeNotFoundException();
+            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
 
             return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId);
         }
@@ -54,13 +58,16 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
-            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
-                ?? throw new EmployeeNotFoundException();
+            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
 
             using var transaction = connection.BeginTransaction();
 
             try
             {
+                // TODO: 수정
                 _workExperienceDao.UpdateWorkExperienceById(connection, transaction, id, hireDate, leaveDate, description);
 
                 transaction.Commit();
@@ -80,13 +87,16 @@ namespace Biz.Services
             using var connection = _databaseConfig.GetConnection();
             connection.Open();
 
-            var _ = _employeeDao.SelectEmployeeById(connection, employeeId)
-                ?? throw new EmployeeNotFoundException();
+            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            {
+                throw new EmployeeNotFoundException();
+            }
 
             using var transaction = connection.BeginTransaction();
 
             try
             {
+                // TODO: 수정
                 _workExperienceDao.DeleteWorkExperienceById(connection, transaction, id);
 
                 transaction.Commit();
