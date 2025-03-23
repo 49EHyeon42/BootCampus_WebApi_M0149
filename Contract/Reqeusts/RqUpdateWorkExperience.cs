@@ -1,11 +1,7 @@
-﻿namespace Contract.Responses
+﻿namespace Contract.Reqeusts
 {
-    public class RsFindWorkExperience
+    public class RqUpdateWorkExperience
     {
-        /// <summary>
-        /// 경력사항 식별자
-        /// </summary>
-        public required int Id { get; init; }
         /// <summary>
         /// 경력사항 입사일
         /// </summary>
