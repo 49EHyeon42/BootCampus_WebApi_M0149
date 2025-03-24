@@ -37,14 +37,6 @@ namespace Biz.Services
             }
         }
 
-        public async Task<List<EmployeeDto>> FindAllEmployeesAsync()
-        {
-            await using var connection = _databaseConfig.GetDbConnection();
-            await connection.OpenAsync();
-
-            return await _employeeDao.SelectAllEmployeeAsync(connection);
-        }
-
         public async Task<EmployeeDto> FindEmployeeByIdAsync(int id)
         {
             await using var connection = _databaseConfig.GetDbConnection();
@@ -52,6 +44,14 @@ namespace Biz.Services
 
             return await _employeeDao.SelectEmployeeByIdAsync(connection, id)
                 ?? throw new EmployeeNotFoundException();
+        }
+
+        public async Task<List<EmployeeDto>> FindAllEmployeesAsync()
+        {
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
+
+            return await _employeeDao.SelectAllEmployeeAsync(connection);
         }
 
         public async Task UpdateEmployeeByIdAsync(int id, string name, int age, string address, string phoneNumber)
