@@ -4,6 +4,7 @@ using Contract.Biz;
 using Contract.Dac;
 using Dac.Daos;
 using Web;
+using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapControllers();
 

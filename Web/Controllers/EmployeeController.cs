@@ -9,16 +9,13 @@ namespace Web.Controllers
     [Route("api/employees")]
     [ApiController]
     [EmployeeControllerExceptionFilter]
-    public class EmployeeController(UserStorage userStorage, IEmployeeService employeeService) : ControllerBase
+    public class EmployeeController(IEmployeeService employeeService) : ControllerBase
     {
-        private readonly UserStorage _userStorage = userStorage;
         private readonly IEmployeeService _employeeService = employeeService;
 
         [HttpGet]
         public async Task<ActionResult<List<RsFindEmployee>>> FindAllEmployee()
         {
-            var userName = _userStorage.GetName();
-
             var employeeDtos = await _employeeService.FindAllEmployeesAsync();
 
             return Ok(employeeDtos.Select(dto => new RsFindEmployee
@@ -34,8 +31,6 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEmployee([FromBody] RqSaveEmployee body)
         {
-            var userName = _userStorage.GetName();
-
             await _employeeService.SaveEmployeeAsync(body.Name, body.Age, body.Address, body.PhoneNumber);
 
             return Ok();
@@ -44,8 +39,6 @@ namespace Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RsFindEmployee>> FindEmployee(int id)
         {
-            var userName = _userStorage.GetName();
-
             var employeeDto = await _employeeService.FindEmployeeByIdAsync(id);
 
             return Ok(new RsFindEmployee
@@ -61,8 +54,6 @@ namespace Web.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateEmployee(int id, [FromBody] RqUpdateEmployee body)
         {
-            var userName = _userStorage.GetName();
-
             await _employeeService.UpdateEmployeeByIdAsync(id, body.Name, body.Age, body.Address, body.PhoneNumber);
 
             return Ok();
@@ -71,8 +62,6 @@ namespace Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var userName = _userStorage.GetName();
-
             await _employeeService.DeleteEmployeeByIdAsync(id);
 
             return Ok();
