@@ -22,7 +22,7 @@ namespace Web.Middlewares
 
             if (request.Path.StartsWithSegments("/api/sign", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogInformation("{DateTime} RequestLoggingMiddleware: Method:{Method}, Path:{Path}{QueryString}", DateTime.Now, request.Method, request.Path, request.QueryString);
+                _logger.LogInformation("RequestLoggingMiddleware: Method:{Method}, Path:{Path}{QueryString}", request.Method, request.Path, request.QueryString);
 
                 await _next(context);
 
@@ -33,11 +33,11 @@ namespace Web.Middlewares
             {
                 var userName = _userStorage.GetName();
 
-                _logger.LogInformation("{DateTime} RequestLoggingMiddleware: UserName:{UserName}, Method:{Method}, Path:{Path}{QueryString}", DateTime.Now, userName, request.Method, request.Path, request.QueryString);
+                _logger.LogInformation("RequestLoggingMiddleware: UserName:{UserName}, Method:{Method}, Path:{Path}{QueryString}", userName, request.Method, request.Path, request.QueryString);
             }
             catch (UserNotFoundException exception)
             {
-                _logger.LogError(exception, "{DateTime} RequestLoggingMiddleware: {ExceptionMessage}", DateTime.Now, exception.Message);
+                _logger.LogError(exception, "RequestLoggingMiddleware: {ExceptionMessage}", exception.Message);
 
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 
