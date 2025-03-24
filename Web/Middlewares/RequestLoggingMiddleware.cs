@@ -2,14 +2,22 @@
 
 namespace Web.Middlewares
 {
-    public class RequestLoggingMiddleware(ILogger<RequestLoggingMiddleware> logger, RequestDelegate next, UserStorage userStorage)
+    public class RequestLoggingMiddleware(IConfiguration configuration, ILogger<RequestLoggingMiddleware> logger, RequestDelegate next, UserStorage userStorage)
     {
+        private readonly bool _enable = configuration.GetValue<bool>("RequestLoggingMiddleware:Enable");
         private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
         private readonly RequestDelegate _next = next;
         private readonly UserStorage _userStorage = userStorage;
 
         public async Task InvokeAsync(HttpContext context)
         {
+            if (!_enable)
+            {
+                await _next(context);
+
+                return;
+            }
+
             var request = context.Request;
 
             if (request.Path.StartsWithSegments("/api/sign", StringComparison.OrdinalIgnoreCase))
