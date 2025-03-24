@@ -29,7 +29,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("EmployeeService:SaveEmployee: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("{DateTime} EmployeeService:SaveEmployee: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
 
                 await transaction.RollbackAsync();
 
@@ -74,7 +74,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("EmployeeService:UpdateEmployeeById: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("{DateTime} EmployeeService:UpdateEmployeeById: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
 
                 await transaction.RollbackAsync();
 
@@ -103,7 +103,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("EmployeeService:DeleteEmployeeById: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("{DateTime} EmployeeService:DeleteEmployeeById: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
 
                 await transaction.RollbackAsync();
 
