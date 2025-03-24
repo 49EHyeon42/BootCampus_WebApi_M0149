@@ -1,5 +1,4 @@
-﻿using Biz.Services;
-using Contract.Biz;
+﻿using Contract.Biz;
 using Contract.Reqeusts;
 using Contract.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +15,11 @@ namespace Web.Controllers
         private readonly IWorkExperienceService _workExperienceService = workExperienceService;
 
         [HttpGet]
-        public ActionResult<List<RsFindWorkExperience>> FindAllWorkExperience(int employeeId)
+        public async Task<ActionResult<List<RsFindWorkExperience>>> FindAllWorkExperience(int employeeId)
         {
             var userName = _userStorage.GetName();
 
-            var workExperienceDtos = _workExperienceService.FindAllWorkExperienceByEmployeeId(employeeId);
-
-            // TODO: 로그
+            var workExperienceDtos = await _workExperienceService.FindAllWorkExperienceByEmployeeIdAsync(employeeId);
 
             return Ok(workExperienceDtos.Select(dto => new RsFindWorkExperience
             {
@@ -34,37 +31,31 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveWorkExperience(int employeeId, RqSaveWorkExperience body)
+        public async Task<IActionResult> SaveWorkExperience(int employeeId, [FromBody] RqSaveWorkExperience body)
         {
             var userName = _userStorage.GetName();
 
-            _workExperienceService.SaveWorkExperienceByEmployeeId(employeeId, body.HireDate, body.LeaveDate, body.Description);
-
-            // TODO: 로그
+            await _workExperienceService.SaveWorkExperienceByEmployeeIdAsync(employeeId, body.HireDate, body.LeaveDate, body.Description);
 
             return Ok();
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateWorkExperience(int employeeId, int id, RqUpdateWorkExperience body)
+        public async Task<IActionResult> UpdateWorkExperience(int employeeId, int id, [FromBody] RqUpdateWorkExperience body)
         {
             var userName = _userStorage.GetName();
 
-            _workExperienceService.UpdateWorkExperienceByIdAndEmployeeId(employeeId, id, body.HireDate, body.LeaveDate, body.Description);
-
-            // TODO: 로그
+            await _workExperienceService.UpdateWorkExperienceByIdAndEmployeeIdAsync(employeeId, id, body.HireDate, body.LeaveDate, body.Description);
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteWorkExperience(int employeeId, int id)
+        public async Task<IActionResult> DeleteWorkExperience(int employeeId, int id)
         {
             var userName = _userStorage.GetName();
 
-            _workExperienceService.DeleteWorkExperienceByIdAndEmployeeId(employeeId, id);
-
-            // TODO: 로그
+            await _workExperienceService.DeleteWorkExperienceByIdAndEmployeeIdAsync(employeeId, id);
 
             return Ok();
         }

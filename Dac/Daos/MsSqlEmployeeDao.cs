@@ -5,16 +5,17 @@ using Dapper;
 
 namespace Dac.Daos
 {
+
     public class MsSqlEmployeeDao : IEmployeeDao
     {
-        public void InsertEmployee(IDbConnection connection, IDbTransaction transaction, string name, int age, string address, string phoneNumber)
+        public async Task InsertEmployeeAsync(IDbConnection connection, IDbTransaction transaction, string name, int age, string address, string phoneNumber)
         {
             string query = @"
                 INSERT INTO Employee (Name, Age, Address, PhoneNumber)
                 VALUES (@Name, @Age, @Address, @PhoneNumber);
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 Name = name,
                 Age = age,
@@ -23,7 +24,7 @@ namespace Dac.Daos
             }, transaction);
         }
 
-        public EmployeeDto? SelectEmployeeById(IDbConnection connection, int id)
+        public async Task<EmployeeDto?> SelectEmployeeByIdAsync(IDbConnection connection, int id)
         {
             string query = @"
                 SELECT *
@@ -31,23 +32,25 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            return connection.QueryFirstOrDefault<EmployeeDto>(query, new
+            return await connection.QueryFirstOrDefaultAsync<EmployeeDto>(query, new
             {
                 Id = id
             });
         }
 
-        public List<EmployeeDto> SelectAllEmployee(IDbConnection connection)
+        public async Task<List<EmployeeDto>> SelectAllEmployeeAsync(IDbConnection connection)
         {
             string query = @"
                 SELECT *
                 FROM Employee;
             ";
 
-            return connection.Query<EmployeeDto>(query).AsList();
+            var result = await connection.QueryAsync<EmployeeDto>(query);
+
+            return result.AsList();
         }
 
-        public void UpdateEmployeeById(IDbConnection connection, IDbTransaction transaction, int id, string name, int age, string address, string phoneNumber)
+        public async Task UpdateEmployeeByIdAsync(IDbConnection connection, IDbTransaction transaction, int id, string name, int age, string address, string phoneNumber)
         {
             string query = @"
                 UPDATE Employee
@@ -56,7 +59,7 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 Id = id,
                 Name = name,
@@ -67,14 +70,14 @@ namespace Dac.Daos
             }, transaction);
         }
 
-        public void DeleteEmployeeById(IDbConnection connection, IDbTransaction transaction, int id)
+        public async Task DeleteEmployeeByIdAsync(IDbConnection connection, IDbTransaction transaction, int id)
         {
             string query = @"
                 DELETE FROM Employee
                 WHERE Id = @Id;
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 Id = id
             }, transaction);

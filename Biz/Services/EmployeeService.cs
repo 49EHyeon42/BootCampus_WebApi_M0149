@@ -14,96 +14,98 @@ namespace Biz.Services
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
-        public void SaveEmployee(string name, int age, string address, string phoneNumber)
+        public async Task SaveEmployeeAsync(string name, int age, string address, string phoneNumber)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _employeeDao.InsertEmployee(connection, transaction, name, age, address, phoneNumber);
+                await _employeeDao.InsertEmployeeAsync(connection, transaction, name, age, address, phoneNumber);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
                 _logger.LogInformation("EmployeeService:SaveEmployee: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }
         }
 
-        public List<EmployeeDto> FindAllEmployees()
+        public async Task<List<EmployeeDto>> FindAllEmployeesAsync()
         {
-            using var connection = _databaseConfig.GetDbConnection();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            return _employeeDao.SelectAllEmployee(connection);
+            return await _employeeDao.SelectAllEmployeeAsync(connection);
         }
 
-        public EmployeeDto FindEmployeeById(int id)
+        public async Task<EmployeeDto> FindEmployeeByIdAsync(int id)
         {
-            using var connection = _databaseConfig.GetDbConnection();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            return _employeeDao.SelectEmployeeById(connection, id)
+            return await _employeeDao.SelectEmployeeByIdAsync(connection, id)
                 ?? throw new EmployeeNotFoundException();
         }
 
-        public void UpdateEmployeeById(int id, string name, int age, string address, string phoneNumber)
+        public async Task UpdateEmployeeByIdAsync(int id, string name, int age, string address, string phoneNumber)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_employeeDao.SelectEmployeeById(connection, id) is null)
+            if (await _employeeDao.SelectEmployeeByIdAsync(connection, id) is null)
             {
                 throw new EmployeeNotFoundException();
             }
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _employeeDao.UpdateEmployeeById(connection, transaction, id, name, age, address, phoneNumber);
+                await _employeeDao.UpdateEmployeeByIdAsync(connection, transaction, id, name, age, address, phoneNumber);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
                 _logger.LogInformation("EmployeeService:UpdateEmployeeById: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }
         }
 
-        public void DeleteEmployeeById(int id)
+        public async Task DeleteEmployeeByIdAsync(int id)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_employeeDao.SelectEmployeeById(connection, id) is null)
+            if (await _employeeDao.SelectEmployeeByIdAsync(connection, id) is null)
             {
                 throw new EmployeeNotFoundException();
             }
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _workExperienceDao.DeleteWorkExperienceByEmployeeId(connection, transaction, id);
-                _employeeDao.DeleteEmployeeById(connection, transaction, id);
+                await _workExperienceDao.DeleteWorkExperienceByEmployeeIdAsync(connection, transaction, id);
+                await _employeeDao.DeleteEmployeeByIdAsync(connection, transaction, id);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
                 _logger.LogInformation("EmployeeService:DeleteEmployeeById: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }

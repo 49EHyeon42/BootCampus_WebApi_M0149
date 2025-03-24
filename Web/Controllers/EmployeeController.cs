@@ -15,13 +15,11 @@ namespace Web.Controllers
         private readonly IEmployeeService _employeeService = employeeService;
 
         [HttpGet]
-        public ActionResult<List<RsFindEmployee>> FindAllEmployee()
+        public async Task<ActionResult<List<RsFindEmployee>>> FindAllEmployee()
         {
             var userName = _userStorage.GetName();
 
-            var employeeDtos = _employeeService.FindAllEmployees();
-
-            // TODO: 로그
+            var employeeDtos = await _employeeService.FindAllEmployeesAsync();
 
             return Ok(employeeDtos.Select(dto => new RsFindEmployee
             {
@@ -34,25 +32,21 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveEmployee(RqSaveEmployee body)
+        public async Task<IActionResult> SaveEmployee([FromBody] RqSaveEmployee body)
         {
             var userName = _userStorage.GetName();
 
-            _employeeService.SaveEmployee(body.Name, body.Age, body.Address, body.PhoneNumber);
-
-            // TODO: 로그
+            await _employeeService.SaveEmployeeAsync(body.Name, body.Age, body.Address, body.PhoneNumber);
 
             return Ok();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<RsFindEmployee> FindEmployee(int id)
+        public async Task<ActionResult<RsFindEmployee>> FindEmployee(int id)
         {
             var userName = _userStorage.GetName();
 
-            var employeeDto = _employeeService.FindEmployeeById(id);
-
-            // TODO: 로그
+            var employeeDto = await _employeeService.FindEmployeeByIdAsync(id);
 
             return Ok(new RsFindEmployee
             {
@@ -65,25 +59,21 @@ namespace Web.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateEmployee(int id, RqUpdateEmployee body)
+        public async Task<IActionResult> UpdateEmployee(int id, [FromBody] RqUpdateEmployee body)
         {
             var userName = _userStorage.GetName();
 
-            _employeeService.UpdateEmployeeById(id, body.Name, body.Age, body.Address, body.PhoneNumber);
-
-            // TODO: 로그
+            await _employeeService.UpdateEmployeeByIdAsync(id, body.Name, body.Age, body.Address, body.PhoneNumber);
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteEmployee(int id)
         {
             var userName = _userStorage.GetName();
 
-            _employeeService.DeleteEmployeeById(id);
-
-            // TODO: 로그
+            await _employeeService.DeleteEmployeeByIdAsync(id);
 
             return Ok();
         }

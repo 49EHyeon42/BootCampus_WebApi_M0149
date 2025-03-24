@@ -4,9 +4,9 @@ namespace Contract.Biz
 {
     public interface IWorkExperienceService
     {
-        public void SaveWorkExperienceByEmployeeId(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
-        public List<WorkExperienceDto> FindAllWorkExperienceByEmployeeId(int employeeId);
-        public void UpdateWorkExperienceByIdAndEmployeeId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description);
-        public void DeleteWorkExperienceByIdAndEmployeeId(int employeeId, int id);
+        Task SaveWorkExperienceByEmployeeIdAsync(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
+        Task<List<WorkExperienceDto>> FindAllWorkExperienceByEmployeeIdAsync(int employeeId);
+        Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description);
+        Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id);
     }
 }

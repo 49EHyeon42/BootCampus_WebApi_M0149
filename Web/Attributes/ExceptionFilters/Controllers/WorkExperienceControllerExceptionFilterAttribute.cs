@@ -7,7 +7,9 @@ namespace Web.Attributes.ExceptionFilters.Controllers
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class WorkExperienceControllerExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        public override void OnException(ExceptionContext context)
+        // NOTE: `OnException()`과 `OnExceptionAsync()` 모두 있는 경우, `OnExceptionAsync()` 동작 후 `OnException()`가 처리된다.
+
+        public override Task OnExceptionAsync(ExceptionContext context)
         {
             context.Result = context.Exception switch
             {
@@ -18,6 +20,8 @@ namespace Web.Attributes.ExceptionFilters.Controllers
             };
 
             context.ExceptionHandled = context.Result is not null;
+
+            return Task.CompletedTask;
         }
     }
 }

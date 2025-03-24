@@ -4,10 +4,10 @@ namespace Contract.Biz
 {
     public interface IEmployeeService
     {
-        public void SaveEmployee(string name, int age, string address, string phoneNumber);
-        public List<EmployeeDto> FindAllEmployees();
-        public EmployeeDto FindEmployeeById(int id);
-        public void UpdateEmployeeById(int id, string name, int age, string address, string phoneNumber);
-        public void DeleteEmployeeById(int id);
+        Task SaveEmployeeAsync(string name, int age, string address, string phoneNumber);
+        Task<List<EmployeeDto>> FindAllEmployeesAsync();
+        Task<EmployeeDto> FindEmployeeByIdAsync(int id);
+        Task UpdateEmployeeByIdAsync(int id, string name, int age, string address, string phoneNumber);
+        Task DeleteEmployeeByIdAsync(int id);
     }
 }

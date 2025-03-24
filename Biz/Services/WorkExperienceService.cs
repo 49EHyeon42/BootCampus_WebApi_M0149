@@ -14,97 +14,98 @@ namespace Biz.Services
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
-        public void SaveWorkExperienceByEmployeeId(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
+        public async Task SaveWorkExperienceByEmployeeIdAsync(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            if (await _employeeDao.SelectEmployeeByIdAsync(connection, employeeId) is null)
             {
                 throw new EmployeeNotFoundException();
             }
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _workExperienceDao.InsertWorkExperience(connection, transaction, employeeId, hireDate, leaveDate, description);
+                await _workExperienceDao.InsertWorkExperienceAsync(connection, transaction, employeeId, hireDate, leaveDate, description);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("WorkExperienceService:SaveWorkExperienceByEmployeeId: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("WorkExperienceService:SaveWorkExperienceByEmployeeIdAsync: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }
         }
 
-        public List<WorkExperienceDto> FindAllWorkExperienceByEmployeeId(int employeeId)
+        public async Task<List<WorkExperienceDto>> FindAllWorkExperienceByEmployeeIdAsync(int employeeId)
         {
-            using var connection = _databaseConfig.GetDbConnection();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_employeeDao.SelectEmployeeById(connection, employeeId) is null)
+            if (await _employeeDao.SelectEmployeeByIdAsync(connection, employeeId) is null)
             {
                 throw new EmployeeNotFoundException();
             }
 
-            return _workExperienceDao.SelectAllWorkExperienceByEmployeeId(connection, employeeId);
+            return await _workExperienceDao.SelectAllWorkExperienceByEmployeeIdAsync(connection, employeeId);
         }
 
-        public void UpdateWorkExperienceByIdAndEmployeeId(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public async Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)
+            if (await _workExperienceDao.SelectWorkExperienceByIdAndEmployeeIdAsync(connection, id, employeeId) is null)
             {
                 throw new WorkExperienceNotFoundException();
             }
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _workExperienceDao.UpdateWorkExperienceById(connection, transaction, id, hireDate, leaveDate, description);
+                await _workExperienceDao.UpdateWorkExperienceByIdAsync(connection, transaction, id, hireDate, leaveDate, description);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("WorkExperienceService:UpdateWorkExperienceByIdAndEmployeeId: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("WorkExperienceService:UpdateWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }
         }
 
-        public void DeleteWorkExperienceByIdAndEmployeeId(int employeeId, int id)
+        public async Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id)
         {
-            using var connection = _databaseConfig.GetDbConnection();
-            connection.Open();
+            await using var connection = _databaseConfig.GetDbConnection();
+            await connection.OpenAsync();
 
-            if (_workExperienceDao.SelectWorkExperienceByIdAndEmployeeId(connection, id, employeeId) is null)
+            if (await _workExperienceDao.SelectWorkExperienceByIdAndEmployeeIdAsync(connection, id, employeeId) is null)
             {
                 throw new WorkExperienceNotFoundException();
             }
 
-            using var transaction = connection.BeginTransaction();
+            await using var transaction = await connection.BeginTransactionAsync();
 
             try
             {
-                _workExperienceDao.DeleteWorkExperienceById(connection, transaction, id);
+                await _workExperienceDao.DeleteWorkExperienceByIdAsync(connection, transaction, id);
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("WorkExperienceService:DeleteWorkExperienceByIdAndEmployeeId: {ExceptionMessage}", exception.Message);
+                _logger.LogInformation("WorkExperienceService:DeleteWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", exception.Message);
 
-                transaction.Rollback();
+                await transaction.RollbackAsync();
 
                 throw;
             }

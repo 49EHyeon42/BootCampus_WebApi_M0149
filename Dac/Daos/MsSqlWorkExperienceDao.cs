@@ -7,14 +7,14 @@ namespace Dac.Daos
 {
     public class MsSqlWorkExperienceDao : IWorkExperienceDao
     {
-        public void InsertWorkExperience(IDbConnection connection, IDbTransaction transaction, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
+        public async Task InsertWorkExperienceAsync(IDbConnection connection, IDbTransaction transaction, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             string query = @"
                 INSERT INTO WorkExperience (EmployeeId, HireDate, LeaveDate, Description)
                 VALUES (@EmployeeId, @HireDate, @LeaveDate, @Description);
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 EmployeeId = employeeId,
                 HireDate = hireDate,
@@ -23,7 +23,7 @@ namespace Dac.Daos
             }, transaction);
         }
 
-        public WorkExperienceDto? SelectWorkExperienceByIdAndEmployeeId(IDbConnection connection, int id, int employeeId)
+        public async Task<WorkExperienceDto?> SelectWorkExperienceByIdAndEmployeeIdAsync(IDbConnection connection, int id, int employeeId)
         {
             string query = @"
                 SELECT *
@@ -31,14 +31,14 @@ namespace Dac.Daos
                 WHERE Id = @Id AND EmployeeId = @EmployeeId;
             ";
 
-            return connection.QuerySingleOrDefault<WorkExperienceDto>(query, new
+            return await connection.QuerySingleOrDefaultAsync<WorkExperienceDto>(query, new
             {
                 Id = id,
                 EmployeeId = employeeId
             });
         }
 
-        public List<WorkExperienceDto> SelectAllWorkExperienceByEmployeeId(IDbConnection connection, int employeeId)
+        public async Task<List<WorkExperienceDto>> SelectAllWorkExperienceByEmployeeIdAsync(IDbConnection connection, int employeeId)
         {
             string query = @"
                 SELECT *
@@ -46,13 +46,15 @@ namespace Dac.Daos
                 WHERE EmployeeId = @EmployeeId;
             ";
 
-            return connection.Query<WorkExperienceDto>(query, new
+            var result = await connection.QueryAsync<WorkExperienceDto>(query, new
             {
                 EmployeeId = employeeId
-            }).AsList();
+            });
+
+            return result.AsList();
         }
 
-        public void UpdateWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public async Task UpdateWorkExperienceByIdAsync(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             string query = @"
                 UPDATE WorkExperience
@@ -61,7 +63,7 @@ namespace Dac.Daos
                 WHERE Id = @Id;
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 Id = id,
                 HireDate = hireDate,
@@ -71,27 +73,27 @@ namespace Dac.Daos
             }, transaction);
         }
 
-        public void DeleteWorkExperienceById(IDbConnection connection, IDbTransaction transaction, int id)
+        public async Task DeleteWorkExperienceByIdAsync(IDbConnection connection, IDbTransaction transaction, int id)
         {
             string query = @"
                 DELETE FROM WorkExperience
                 WHERE Id = @Id;
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 Id = id
             }, transaction);
         }
 
-        public void DeleteWorkExperienceByEmployeeId(IDbConnection connection, IDbTransaction transaction, int employeeId)
+        public async Task DeleteWorkExperienceByEmployeeIdAsync(IDbConnection connection, IDbTransaction transaction, int employeeId)
         {
             string query = @"
                 DELETE FROM WorkExperience
                 WHERE EmployeeId = @EmployeeId;
             ";
 
-            connection.Execute(query, new
+            await connection.ExecuteAsync(query, new
             {
                 EmployeeId = employeeId
             }, transaction);
