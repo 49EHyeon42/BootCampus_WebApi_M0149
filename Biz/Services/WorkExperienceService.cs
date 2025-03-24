@@ -34,7 +34,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("{Datetime} WorkExperienceService:SaveWorkExperienceByEmployeeIdAsync: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
+                _logger.LogInformation("{Datetime} WorkExperienceService:SaveWorkExperienceByEmployeeIdAsync: {ExceptionMessage}", DateTime.Now, exception.Message);
 
                 await transaction.RollbackAsync();
 
@@ -75,7 +75,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("{DateTime} WorkExperienceService:UpdateWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
+                _logger.LogInformation("{DateTime} WorkExperienceService:UpdateWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", DateTime.Now, exception.Message);
 
                 await transaction.RollbackAsync();
 
@@ -103,7 +103,7 @@ namespace Biz.Services
             }
             catch (Exception exception)
             {
-                _logger.LogInformation("{DateTime} WorkExperienceService:DeleteWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", DateTime.UtcNow, exception.Message);
+                _logger.LogInformation("{DateTime} WorkExperienceService:DeleteWorkExperienceByIdAndEmployeeIdAsync: {ExceptionMessage}", DateTime.Now, exception.Message);
 
                 await transaction.RollbackAsync();
 
