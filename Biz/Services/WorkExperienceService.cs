@@ -55,7 +55,7 @@ namespace Biz.Services
             return await _workExperienceDao.SelectAllWorkExperienceByEmployeeIdAsync(connection, employeeId);
         }
 
-        public async Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description)
+        public async Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int id, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description)
         {
             await using var connection = _databaseConfig.GetDbConnection();
             await connection.OpenAsync();
@@ -83,7 +83,7 @@ namespace Biz.Services
             }
         }
 
-        public async Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id)
+        public async Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int id, int employeeId)
         {
             await using var connection = _databaseConfig.GetDbConnection();
             await connection.OpenAsync();

@@ -6,7 +6,7 @@ namespace Contract.Biz
     {
         Task SaveWorkExperienceByEmployeeIdAsync(int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
         Task<List<WorkExperienceDto>> FindAllWorkExperienceByEmployeeIdAsync(int employeeId);
-        Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id, DateTime hireDate, DateTime? leaveDate, string? description);
-        Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int employeeId, int id);
+        Task UpdateWorkExperienceByIdAndEmployeeIdAsync(int id, int employeeId, DateTime hireDate, DateTime? leaveDate, string? description);
+        Task DeleteWorkExperienceByIdAndEmployeeIdAsync(int id, int employeeId);
     }
 }

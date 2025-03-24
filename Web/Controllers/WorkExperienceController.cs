@@ -38,7 +38,7 @@ namespace Web.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateWorkExperience(int employeeId, int id, [FromBody] RqUpdateWorkExperience body)
         {
-            await _workExperienceService.UpdateWorkExperienceByIdAndEmployeeIdAsync(employeeId, id, body.HireDate, body.LeaveDate, body.Description);
+            await _workExperienceService.UpdateWorkExperienceByIdAndEmployeeIdAsync(id, employeeId, body.HireDate, body.LeaveDate, body.Description);
 
             return Ok();
         }
@@ -46,7 +46,7 @@ namespace Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWorkExperience(int employeeId, int id)
         {
-            await _workExperienceService.DeleteWorkExperienceByIdAndEmployeeIdAsync(employeeId, id);
+            await _workExperienceService.DeleteWorkExperienceByIdAndEmployeeIdAsync(id, employeeId);
 
             return Ok();
         }
