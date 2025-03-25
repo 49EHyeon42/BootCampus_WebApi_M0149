@@ -16,8 +16,8 @@ namespace Contract.Dac
         Task InsertEmployeeAsync(IDbConnection connection, IDbTransaction transaction, string name, int age, string address, string phoneNumber);
 
         /// <summary>직원 식별자를 통해 직원 조회 비동기 메서드</summary>
-        /// <param name="id">직원 식별자</param>
         /// <param name="connection">데이터베이스 연결</param>
+        /// <param name="id">직원 식별자</param>
         /// <returns><see cref="Task{EmployeeDto?}"/></returns>
         Task<EmployeeDto?> SelectEmployeeByIdAsync(IDbConnection connection, int id);
 

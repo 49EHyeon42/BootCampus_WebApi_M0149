@@ -14,6 +14,12 @@ namespace Biz.Services
         private readonly IEmployeeDao _employeeDao = employeeDao;
         private readonly IWorkExperienceDao _workExperienceDao = workExperienceDao;
 
+        /// <summary>직원 저장 비동기 메서드</summary>
+        /// <param name="name">직원 이름</param>
+        /// <param name="age">직원 나이</param>
+        /// <param name="address">직원 주소</param>
+        /// <param name="phoneNumber">직원 전화번호</param>
+        /// <returns><see cref="Task"/></returns> 
         public async Task SaveEmployeeAsync(string name, int age, string address, string phoneNumber)
         {
             await using var connection = _databaseConfig.GetDbConnection();
@@ -37,6 +43,10 @@ namespace Biz.Services
             }
         }
 
+        /// <summary>직원 식별자를 통해 직원 조회 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <returns><see cref="Task{EmployeeDto}"/></returns>
+        /// <exception cref="EmployeeNotFoundException"></exception>
         public async Task<EmployeeDto> FindEmployeeByIdAsync(int id)
         {
             await using var connection = _databaseConfig.GetDbConnection();
@@ -46,6 +56,8 @@ namespace Biz.Services
                 ?? throw new EmployeeNotFoundException();
         }
 
+        /// <summary>직원 목록 조회 비동기 메서드</summary>
+        /// <returns><see cref="Task{List{EmployeeDto}}"/></returns>
         public async Task<List<EmployeeDto>> FindAllEmployeesAsync()
         {
             await using var connection = _databaseConfig.GetDbConnection();
@@ -54,6 +66,14 @@ namespace Biz.Services
             return await _employeeDao.SelectAllEmployeeAsync(connection);
         }
 
+        /// <summary>직원 식별자를 통해 직원 갱신 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <param name="name">직원 이름</param>
+        /// <param name="age">직원 나이</param>
+        /// <param name="address">직원 주소</param>
+        /// <param name="phoneNumber">직원 전화번호</param>
+        /// <returns><see cref="Task"/></returns>
+        /// <exception cref="EmployeeNotFoundException"></exception>
         public async Task UpdateEmployeeByIdAsync(int id, string name, int age, string address, string phoneNumber)
         {
             await using var connection = _databaseConfig.GetDbConnection();
@@ -82,6 +102,10 @@ namespace Biz.Services
             }
         }
 
+        /// <summary>직원 식별자를 통해 직원 삭제 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <returns><see cref="Task"/></returns>
+        /// <exception cref="EmployeeNotFoundException"></exception>
         public async Task DeleteEmployeeByIdAsync(int id)
         {
             await using var connection = _databaseConfig.GetDbConnection();
