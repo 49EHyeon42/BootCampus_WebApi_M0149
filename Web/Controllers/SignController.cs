@@ -12,6 +12,9 @@ namespace Web.Controllers
     {
         private readonly UserStorage _userStorage = userStorage;
 
+        /// <summary>사용자 등록 메서드</summary>
+        /// <param name="request">사용자 등록 요청 본문</param>
+        /// <returns><see cref="IActionResult"/></returns>
         [HttpPost]
         public IActionResult SignInUser(RqSignInUser request)
         {
@@ -25,6 +28,8 @@ namespace Web.Controllers
             return Ok();
         }
 
+        /// <summary>사용자 해제 메서드</summary>
+        /// <returns><see cref="IActionResult"/></returns>
         [HttpDelete]
         public IActionResult SignOutUser()
         {

@@ -13,6 +13,8 @@ namespace Web.Controllers
     {
         private readonly IEmployeeService _employeeService = employeeService;
 
+        /// <summary>직원 목록 조회 비동기 메서드</summary>
+        /// <returns><see cref="Task{ActionResult{List{RsFindEmployee}}}"/></returns>
         [HttpGet]
         public async Task<ActionResult<List<RsFindEmployee>>> FindAllEmployee()
         {
@@ -28,6 +30,9 @@ namespace Web.Controllers
             }).ToList());
         }
 
+        /// <summary>직원 저장 비동기 메서드</summary>
+        /// <param name="body">직원 저장 요청 본문</param>
+        /// <returns><see cref="Task{IActionResult}"/></returns>
         [HttpPost]
         public async Task<IActionResult> SaveEmployee([FromBody] RqSaveEmployee body)
         {
@@ -36,6 +41,9 @@ namespace Web.Controllers
             return Ok();
         }
 
+        /// <summary>직원 식별자를 통해 직원 조회 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <returns><see cref="Task{ActionResult{RsFindEmployee}}"/></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<RsFindEmployee>> FindEmployee(int id)
         {
@@ -51,6 +59,10 @@ namespace Web.Controllers
             });
         }
 
+        /// <summary>직원 식별자를 통해 직원 갱신 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <param name="body">직원 갱신 요청 본문</param>
+        /// <returns><see cref="Task{IActionResult}"/></returns>
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateEmployee(int id, [FromBody] RqUpdateEmployee body)
         {
@@ -59,6 +71,9 @@ namespace Web.Controllers
             return Ok();
         }
 
+        /// <summary>직원 식별자를 통해 직원 삭제 비동기 메서드</summary>
+        /// <param name="id">직원 식별자</param>
+        /// <returns><see cref="Task{IActionResult}"/></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {

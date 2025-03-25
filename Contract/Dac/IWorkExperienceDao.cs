@@ -39,11 +39,15 @@ namespace Contract.Dac
         Task UpdateWorkExperienceByIdAsync(IDbConnection connection, IDbTransaction transaction, int id, DateTime hireDate, DateTime? leaveDate, string? description);
 
         /// <summary>경력사항 식별자를 통해 경력사항 삭제 비동기 메서드</summary>
-        /// <param name="employeeId">직원 식별자</param>
+        /// <param name="connection">데이터베이스 연결</param>
+        /// <param name="transaction">데이터베이스 트랜잭션</param>
+        /// <param name="id">경력사항 식별자</param>
         /// <returns><see cref="Task"/></returns>
         Task DeleteWorkExperienceByIdAsync(IDbConnection connection, IDbTransaction transaction, int id);
 
         /// <summary>직원 식별자를 통해 경력사항 삭제 비동기 메서드</summary>
+        /// <param name="connection">데이터베이스 연결</param>
+        /// <param name="transaction">데이터베이스 트랜잭션</param>
         /// <param name="employeeId">직원 식별자</param>
         /// <returns><see cref="Task"/></returns>
         Task DeleteWorkExperienceByEmployeeIdAsync(IDbConnection connection, IDbTransaction transaction, int employeeId);
